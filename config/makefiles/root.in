@@ -11,7 +11,6 @@ PERL          = @perl@
 RM_RF         = @rm_rf@
 PARROT        = ../../parrot@exe@
 CAT           = $(PERL) -MExtUtils::Command -e cat
-RECONFIGURE   = $(PERL) $(BUILD_DIR)/tools/dev/reconfigure.pl
 #CONDITIONED_LINE(darwin):
 #CONDITIONED_LINE(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
 #CONDITIONED_LINE(darwin):export MACOSX_DEPLOYMENT_TARGET := @osx_version@
@@ -53,7 +52,7 @@ src/gen_builtins.pir: $(BUILTINS_PIR)
 
 # regenerate the Makefile
 Makefile: config/makefiles/root.in
-	cd $(BUILD_DIR) && $(RECONFIGURE) --step=gen::languages --languages=hq9plus
+	$(PERL) Configure.pl
 
 # This is a listing of all targets, that are meant to be called by users
 help:
