@@ -1,0 +1,8 @@
+.gitignore
+Makefile
+hq9plus.pbc
+src/gen_actions.pir
+src/gen_builtins.pir
+src/gen_grammar.pir
+t/basic_*.HQ9plus
+t/basic_*.out
