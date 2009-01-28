@@ -9,7 +9,7 @@ BUILD_DIR     = @build_dir@
 ## Setup some commands
 PERL          = @perl@
 RM_F          = @rm_f@
-PARROT        = ../../parrot@exe@
+PARROT        = @build_dir@/parrot@exe@
 CAT           = $(PERL) -MExtUtils::Command -e cat
 #IF(darwin):
 #IF(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
