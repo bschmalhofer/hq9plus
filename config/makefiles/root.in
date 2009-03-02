@@ -1,42 +1,79 @@
 ## $Id$
 
 ## arguments we want to run parrot with
-PARROT_ARGS =
+PARROT_ARGS   :=
 
 ## configuration settings
-BUILD_DIR     = @build_dir@
+VERSION       := @versiondir@
+BIN_DIR       := @bin_dir@
+LIB_DIR       := @lib_dir@$(VERSION)
+DOC_DIR       := @doc_dir@$(VERSION)
+MANDIR        := @mandir@$(VERSION)
+
+# Set up extensions
+O             := @o@
+
+# Various paths
+PERL6GRAMMAR  := $(LIB_DIR)/library/PGE/Perl6Grammar.pbc
+NQP           := $(LIB_DIR)/languages/nqp/nqp.pbc
+PCT           := $(LIB_DIR)/library/PCT.pbc
 
 ## Setup some commands
-PERL          = @perl@
-RM_F          = @rm_f@
-PARROT        = @build_dir@/parrot@exe@
-CAT           = $(PERL) -MExtUtils::Command -e cat
+PERL          := @perl@
+CAT           := @cat@
+CHMOD         := @chmod@
+CP            := @cp@
+MKPATH        := @mkpath@
+RM_F          := @rm_f@
+RM_RF         := @rm_rf@
+POD2MAN       := pod2man
+#IF(parrot_is_shared and not(cygwin or win32)):export LD_RUN_PATH := @blib_dir@:$(LD_RUN_PATH)
+PARROT        := ../../parrot@exe@
+PBC_TO_EXE    := ../../pbc_to_exe@exe@
 #IF(darwin):
 #IF(darwin):# MACOSX_DEPLOYMENT_TARGET must be defined for OS X compilation/linking
 #IF(darwin):export MACOSX_DEPLOYMENT_TARGET := @osx_version@
 
-## places to look for things
-PGE_LIBRARY   = $(BUILD_DIR)/runtime/parrot/library/PGE
-PERL6GRAMMAR  = $(PGE_LIBRARY)/Perl6Grammar.pbc
-NQP           = $(BUILD_DIR)/compilers/nqp/nqp.pbc
-PCT           = $(BUILD_DIR)/runtime/parrot/library/PCT.pbc
-
-all: hq9plus.pbc
-
-SOURCES = hq9plus.pir \
+SOURCES := \
   src/gen_grammar.pir \
   src/gen_actions.pir \
   src/gen_builtins.pir \
+  hq9plus.pir
 
-BUILTINS_PIR = \
+BUILTINS_PIR := \
   src/builtins/hello.pir \
   src/builtins/quine.pir \
   src/builtins/nintynine_bottles_of_beer.pir \
-  src/builtins/plus.pir \
+  src/builtins/plus.pir
+
+DOCS := README
+
+TEST_CLEANUPS := \
+  "t/*.HQ9plus" \
+  "t/*.out"
+
+CLEANUPS := \
+  hq9plus.pbc \
+  "src/gen_*.pir" \
+  "*.c" \
+  "*$(O)" \
+  hq9plus@exe@ \
+#IF(win32):  parrot-hq9plus.exe \
+#IF(win32):  parrot-hq9plus.iss \
+#IF(win32):  "setup-parrot-*.exe" \
+  man \
+  installable_hq9plus@exe@
 
 # the default target
-hq9plus.pbc: $(PARROT) $(SOURCES)
+build: hq9plus.pbc
+
+all: build hq9plus@exe@ installable
+
+hq9plus.pbc: $(SOURCES)
 	$(PARROT) $(PARROT_ARGS) -o hq9plus.pbc hq9plus.pir
+
+hq9plus@exe@: hq9plus.pbc
+	$(PBC_TO_EXE) hq9plus.pbc
 
 src/gen_grammar.pir: $(PERL6GRAMMAR) src/parser/grammar.pg
 	$(PARROT) $(PARROT_ARGS) $(PERL6GRAMMAR) \
@@ -48,7 +85,12 @@ src/gen_actions.pir: $(NQP) $(PCT) src/parser/actions.pm
 	    --target=pir src/parser/actions.pm
 
 src/gen_builtins.pir: $(BUILTINS_PIR)
-	$(CAT) $(BUILTINS_PIR) >src/gen_builtins.pir
+	$(CAT) $(BUILTINS_PIR) > src/gen_builtins.pir
+
+installable: installable_hq9plus@exe@
+
+installable_hq9plus@exe@: hq9plus.pbc
+	$(PBC_TO_EXE) hq9plus.pbc --install
 
 # regenerate the Makefile
 Makefile: config/makefiles/root.in
@@ -59,8 +101,13 @@ help:
 	@echo ""
 	@echo "Following targets are available for the user:"
 	@echo ""
-	@echo "  all:               hq9plus.pbc"
+	@echo "  build:             hq9plus.pbc"
 	@echo "                     This is the default."
+	@echo "  hq9plus@exe@      Self-hosting binary not to be installed."
+	@echo "  all:               hq9plus.pbc hq9plus@exe@ installable"
+	@echo "  installable:       Create libs and self-hosting binaries to be installed."
+	@echo "  install:           Install the installable targets and docs."
+	@echo ""
 	@echo "Testing:"
 	@echo "  test:              Run the test suite."
 	@echo "  testclean:         Clean up test results."
@@ -74,25 +121,47 @@ help:
 	@echo "  help:              Print this help message."
 	@echo ""
 
-test: all
+test: build
 	$(PERL) t/harness
 
-# this target has nothing to do
+install: installable
+	$(CP) installable_hq9plus@exe@ $(BIN_DIR)/parrot-hq9plus@exe@
+	$(CHMOD) 0755 $(BIN_DIR)/parrot-hq9plus@exe@
+	-$(MKPATH) $(LIB_DIR)/languages/hq9plus
+	$(CP) hq9plus.pbc $(LIB_DIR)/languages/hq9plus/hq9plus.pbc
+	-$(MKPATH) $(MANDIR)/man1
+	$(POD2MAN) hq9plus.pir > $(MANDIR)/man1/parrot-hq9plus.1
+	-$(MKPATH) $(DOC_DIR)/languages/hq9plus
+	$(CP) $(DOCS) $(DOC_DIR)/languages/hq9plus
+
+uninstall:
+	$(RM_F) $(BIN_DIR)/parrot-hq9plus@exe@
+	$(RM_RF) $(LIB_DIR)/languages/hq9plus
+	$(RM_F) $(MANDIR)/man1/parrot-hq9plus.1
+	$(RM_RF) $(DOC_DIR)/languages/hq9plus
+
+win32-inno-installer: installable
+	-$(MKPATH) man/man1
+	$(POD2MAN) hq9plus.pir > man/man1/parrot-hq9plus.1
+	-$(MKPATH) man/html
+	pod2html --infile hq9plus.pir --outfile man/html/parrot-hq9plus.html
+	$(CP) installable_hq9plus@exe@ parrot-hq9plus.exe
+	$(PERL) $(LIB_DIR)/tools/dev/mk_inno_language.pl hq9plus
+	iscc parrot-hq9plus.iss
+
 testclean:
-
-CLEANUPS = \
-  hq9plus.pbc \
-  src/gen_grammar.pir \
-  src/gen_actions.pir \
-  src/gen_builtins.pir \
-  t/*.HQ9plus \
-  t/*.out
-
+	$(RM_F) $(TEST_CLEANUPS)
 
 clean:
-	$(RM_F) $(CLEANUPS)
+	$(RM_RF) $(TEST_CLEANUPS) $(CLEANUPS)
 
-realclean: clean
-	$(RM_F) Makefile
+realclean:
+	$(RM_RF) $(TEST_CLEANUPS) $(CLEANUPS) Makefile
 
 distclean: realclean
+
+# Local variables:
+#   mode: makefile
+# End:
+# vim: ft=make:
+
