@@ -49,10 +49,12 @@ to the HQ9plus compiler.
     $P1 = $P0.'command_line'(args)
 .end
 
-
-.include 'src/gen_builtins.pir'
 .include 'src/gen_grammar.pir'
 .include 'src/gen_actions.pir'
+.include 'src/builtins/hello.pir'
+.include 'src/builtins/nintynine_bottles_of_beer.pir'
+.include 'src/builtins/plus.pir'
+.include 'src/builtins/quine.pir'
 
 =back
 
