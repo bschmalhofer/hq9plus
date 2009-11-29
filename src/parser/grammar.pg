@@ -1,5 +1,3 @@
-# $Id$
-
 =begin overview
 
 This is the grammar for HQ9plus written as a sequence of Perl 6 rules.

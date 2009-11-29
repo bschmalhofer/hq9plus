@@ -1,5 +1,3 @@
-# $Id$
-
 =begin comments
 
 HQ9plus::Grammar::Actions - ast transformations for HQ9plus

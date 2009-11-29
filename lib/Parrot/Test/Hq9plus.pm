@@ -1,5 +1,3 @@
-# $Id$
-
 package Parrot::Test::Hq9plus;
 
 use strict;

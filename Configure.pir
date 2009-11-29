@@ -1,5 +1,4 @@
 #! /usr/local/bin/parrot
-# $Id$
 
 .include 'sysinfo.pasm'
 .include 'iglobals.pasm'

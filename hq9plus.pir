@@ -1,5 +1,3 @@
-# $Id$
-
 =head1 TITLE
 
 hq9plus.pir - A HQ9plus compiler.

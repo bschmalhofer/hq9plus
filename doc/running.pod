@@ -1,5 +1,3 @@
-# $Id$
-
 =head1 Running
 
 This document describes how to use the command line hq9plus program, which

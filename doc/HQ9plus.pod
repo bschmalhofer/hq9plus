@@ -1,5 +1,3 @@
-# $Id$
-
 =head1 HQ9plus
 
 =head1 Design
