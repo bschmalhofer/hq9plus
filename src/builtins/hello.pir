@@ -1,6 +1,3 @@
-# Copyright (C) 2006-2008, The Perl Foundation.
-# $Id$
-
 =head1
 
 hello.pir -- simple implementation of a hello function

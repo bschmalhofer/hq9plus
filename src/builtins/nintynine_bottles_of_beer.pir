@@ -1,6 +1,3 @@
-# Copyright (C) 2008, The Perl Foundation.
-# $Id$
-
 =head1
 
 nintynine_bottles_of_beer.pir -- simple implementation of a nintynine_bottles_of_beer function

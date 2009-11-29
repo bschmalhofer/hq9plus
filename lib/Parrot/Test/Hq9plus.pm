@@ -1,7 +1,5 @@
 # $Id$
 
-# Copyright (C) 2005-2008, The Perl Foundation.
-
 package Parrot::Test::Hq9plus;
 
 use strict;

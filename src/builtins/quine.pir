@@ -1,6 +1,3 @@
-# Copyright (C) 2008, The Perl Foundation.
-# $Id$
-
 =head1
 
 quine.pir -- a simple print, the code is passed in
