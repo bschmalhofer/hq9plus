@@ -46,10 +46,6 @@ sub get_test_prog {
     my ( $count, $options ) = @_;
 
     my $lang_fn = Parrot::Test::per_test( '.HQ9plus', $count );
-    ( undef, undef, my $current_dir ) = File::Spec->splitpath( Cwd::getcwd() );
-    if ( $current_dir eq 'languages' ) {
-        $lang_fn = File::Spec->catdir( '..', $lang_fn );
-    }
 
     my $test_prog_args = $ENV{TEST_PROG_ARGS} || q{};
 
