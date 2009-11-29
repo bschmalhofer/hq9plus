@@ -7,7 +7,6 @@ Makefile
 *.obj
 *.exe
 *.iss
-hq9plus
 installable_hq9plus
 
 *.tmp

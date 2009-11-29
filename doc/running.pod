@@ -1,0 +1,26 @@
+# $Id$
+
+=head1 Running
+
+This document describes how to use the command line hq9plus program, which
+implements HQ9plus.
+
+=head2 Usage
+
+  parrot hq9plus.pbc [OPTIONS] <input>
+
+or
+
+  parrot-hq9plus@exe [OPTIONS] <input>
+
+A number of additional options are available:
+
+  -q  Quiet mode; suppress output of summary at the end.
+
+=cut
+
+# Local Variables:
+#   fill-column:78
+# End:
+# vim: expandtab shiftwidth=4:
+
