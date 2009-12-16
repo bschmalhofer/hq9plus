@@ -1,6 +1,3 @@
-
-Makefile
-
 *.pbc
 *.c
 *.o
