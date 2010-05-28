@@ -47,7 +47,7 @@ method TOP($/) {
             )
         );
     for $<statement> {
-        $past.push( $( $_ ) );
+        $past.push( $_.ast );
     }
     make $past;
 }

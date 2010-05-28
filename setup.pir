@@ -45,7 +45,7 @@ No Configure step, no Makefile generated.
 
     $P2 = new 'Hash'
     $P2['src/gen_actions.pir'] = 'src/parser/actions.pm'
-    $P0['pir-nqp-rx'] = $P2
+    $P0['pir_nqp'] = $P2
 
     $P3 = new 'Hash'
     $P4 = split "\n", <<'SOURCES'
@@ -64,7 +64,7 @@ SOURCES
 
     $P5 = new 'Hash'
     $P5['parrot-hq9plus'] = 'hq9plus.pbc'
-#    $P0['installable_pbc'] = $P5
+    $P0['installable_pbc'] = $P5
 
     # test
     $S0 = get_libdir()
