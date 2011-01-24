@@ -1,11 +1,9 @@
-Language 'HQ9plus' was created with tools/dev/mk_language_shell.pl, r42797.
+Language 'HQ9plus' was created with tools/dev/mk_language_shell.pl on 2011-01-24.
 
 HQ9plus is a non turing-complete joke language.
 See http://www.esolangs.org/wiki/HQ9_Plus for details.
 
+    $ parrot setup.pir
+    $ parrot setup.pir test
 
-    $ parrot Configure.pir
-    $ make
-    $ make test
-
-hq9plus is hosted at http://github.com/bschmalhofer/hq9plus.
+HQ9plus is hosted at http://github.com/bschmalhofer/hq9plus.

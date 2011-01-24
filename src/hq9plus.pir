@@ -4,7 +4,7 @@ hq9plus.pir - A HQ9plus compiler.
 
 =head2 Description
 
-This is the driver for the HQ9plus compiler.
+This is the base file for the HQ9plus compiler.
 
 This file includes the parsing and grammar rules from
 the src/ directory, loads the relevant PGE libraries,
@@ -21,40 +21,30 @@ object.
 
 =cut
 
-.namespace [ 'HQ9plus';'Compiler' ]
+.HLL 'hq9plus'
+#.loadlib 'hq9plus_group'
 
-.sub 'onload' :anon :load :init
-    load_bytecode 'PCT.pbc'
+.namespace []
 
-    $P1 = new ['PCT';'HLLCompiler']
+.sub '' :anon :load
+    load_bytecode 'HLL.pbc'
 
-    $P1.'language'('HQ9plus')
-    $P1.'parsegrammar'('HQ9plus::Grammar')
-    $P1.'parseactions'('HQ9plus::Grammar::Actions')
-
-    .return()
-.end
-
-=item main(args :slurpy)  :main
-
-Start compilation by passing any command line C<args>
-to the HQ9plus compiler.
-
-=cut
-
-.sub 'main' :main
-    .param pmc args
-
-    $P0 = compreg 'HQ9plus'
-    $P1 = $P0.'command_line'(args)
+    .local pmc hllns, parrotns, imports
+    hllns = get_hll_namespace
+    parrotns = get_root_namespace ['parrot']
+    imports = split ' ', 'PAST PCT HLL Regex Hash'
+    parrotns.'export_to'(hllns, imports)
 .end
 
 .include 'src/gen_grammar.pir'
 .include 'src/gen_actions.pir'
-.include 'src/builtins/hello.pir'
-.include 'src/builtins/nintynine_bottles_of_beer.pir'
-.include 'src/builtins/plus.pir'
-.include 'src/builtins/quine.pir'
+.include 'src/gen_compiler.pir'
+.include 'src/gen_runtime.pir'
+
+#.include 'src/builtins/hello.pir'
+#.include 'src/builtins/nintynine_bottles_of_beer.pir'
+#.include 'src/builtins/plus.pir'
+#.include 'src/builtins/quine.pir'
 
 =back
 
