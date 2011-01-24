@@ -11,5 +11,5 @@ man
 
 src/gen_*.pir
 
-t/basic_*.HQ9plus
-t/basic_*.out
+t/*.HQ9plus
+t/*.out
