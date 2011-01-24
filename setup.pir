@@ -85,9 +85,7 @@ SOURCES
     $P0['installable_pbc'] = $P7
 
     # test
-    $S0 = get_parrot()
-    $S0 .= ' hq9plus.pbc'
-    $P0['prove_exec'] = $S0
+    $P0['prove_exec'] = 'perl -I/usr/local/lib/parrot/2.6.0-devel/tools/lib'
 
     # install
     $P0['inst_lang'] = 'hq9plus/hq9plus.pbc'

@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-hq9plus/t/basic.t - tests for HQ9plus
+t/01-basic.t - tests for HQ9plus
 
 =head1 DESCRIPTION
 
@@ -12,7 +12,8 @@ Very basic checks, but all tests of HQ9plus are necessarily basic.
 
 use strict;
 use warnings;
-use FindBin  ();
+
+use FindBin ();
 use lib "$FindBin::Bin/../lib", "$FindBin::Bin/../../../lib";
 
 use Parrot::Test tests => 13;
